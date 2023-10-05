@@ -5,3 +5,10 @@
 
 - output_dir 文件夹下，`BSBI.index` 过大，压缩为 `zip` 格式上传
 - 额外编码选取：Elias-![](http://latex.codecogs.com/svg.latex?\gamma)编码
+
+### Lab2：顶会论文阅读
+
+撰写论文笔记并录制讲解视频
+
+论文题目：Multi-view Hypergraph Contrastive Policy Learning for Conversational Recommendation
+
