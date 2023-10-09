@@ -1,1 +1,0 @@
-ifndef jos_machine_trapcodes_h define jos_machine_trapcodes_h define ntraps 16 endif

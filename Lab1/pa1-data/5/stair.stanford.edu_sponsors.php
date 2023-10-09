@@ -1,1 +1,0 @@
-stair sponsors stair stanford artificial intelligence robot artificial intelligence laboratory computer science department stanford university home people multimedia papers data sponsors contact sponsors support from the following organizations is gratefully acknowledged

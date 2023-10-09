@@ -1,1 +1,0 @@
-lcd tosend sending cd incoming sid my_site_name mput csv quit

@@ -1,1 +1,0 @@
-marguerite shuttle live system unavailable you are here p&ts home marguerite shuttle system unavailable system unavailable the data from the real time system is not currently available we are working to fix the problem avail technologies inc all rights reserved

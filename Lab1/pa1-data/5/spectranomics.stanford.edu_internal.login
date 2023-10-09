@@ -1,1 +1,0 @@
-carnegie spectranomics home spectranomics the database data explorer publications tech info gallery people please enter username & password recover password username password 2012 carnegie institution all rights reserved
