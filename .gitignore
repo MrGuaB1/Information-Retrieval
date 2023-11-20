@@ -1,5 +1,5 @@
-.idea/*
+.idea
 .DS_Store
-nk_media/*
-nk_news/*
+nk_media
+nk_news
 *.csv
