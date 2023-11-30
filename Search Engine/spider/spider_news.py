@@ -9,9 +9,8 @@ from parsel import Selector
 url_list = [f'http://news.nankai.edu.cn/ywsd/system/count//0003000/000000000000/000/000/c0003000000000000000_000000{i}.shtml' for i in range(497, 604)]
 url_list.append('http://news.nankai.edu.cn/ywsd/index.shtml')
 
-coroutine = asyncio.Semaphore(5)  # 设置协程数，爬虫协程限制较低，减少被爬服务器的压力
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy()) # 解决windows下的RuntimeError: This event loop is already running
-
+coroutine = asyncio.Semaphore(5)
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 url_dict = {}
 url_df = pd.DataFrame(columns=['url'])
 url_df.index.name = 'title'

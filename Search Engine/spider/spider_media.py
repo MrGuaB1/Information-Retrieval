@@ -6,18 +6,15 @@ import httpx
 from parsel import Selector
 
 url_list = [f'https://news.nankai.edu.cn/mtnk/system/count//0006000/000000000000/000/000/c0006000000000000000_000000{i}.shtml' for i in range(750,903)]
-url_list.append("https://news.nankai.edu.cn/mtnk/index.shtml")
-
-sem = asyncio.Semaphore(12)  # 设置协程数，爬虫协程限制较低，减少被爬服务器的压力
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy()) # 解决windows下的RuntimeError: This event loop is already running
+coroutine = asyncio.Semaphore(5)
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 url_dict = {}
-
 url_df = pd.DataFrame(columns=['url'])
 url_df.index.name = 'title'
 
 async def parse_catalogs_page(url):
-    async with sem:
+    async with coroutine:
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
             print(url)
@@ -33,7 +30,7 @@ async def parse_catalogs_page(url):
 
 
 async def parse_page(url):
-    async with sem:
+    async with coroutine:
         print("正在获取..."+str(url))
         try:
             async with httpx.AsyncClient(follow_redirects=True, timeout=10,
