@@ -19,7 +19,7 @@ class AdvancedSearchForm(FlaskForm):
     any_of_these_words = StringField('以下任意字词：')
     none_of_these_words = StringField('不含以下任意字词：')
     site_or_domain = StringField('网站或域名：')
-    time_limit = SelectField('时间范围', choices=["任何时间", "一天内", "一周内", "一个月内", "一年内"], validators=[DataRequired()])
+    time_limit = SelectField('时间范围', choices=["任何时间", "一周内", "一个月内", "一年内"], validators=[DataRequired()])
     is_title_only = RadioField('字词出现位置', choices=["全部网页", "标题"], validators=[DataRequired()])
     submit = SubmitField("高级搜索")
 

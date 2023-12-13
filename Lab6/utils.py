@@ -23,12 +23,12 @@ def parseArgs():
     return argparser.parse_args()
 
 
-# generate user sample by sliding window
+# 通过滑动窗口生成用户样本
 def genUserTrainSamples(args, userDf):
-    # one user generate multiple train samples
+    # 一个用户生成多个训练样本
     userDf.reset_index(drop=True, inplace=True)
     his, tar = [], []
-    for i in range(1, userDf.shape[0]): # enumerate y from 1
+    for i in range(1, userDf.shape[0]):
         # x = window [i - SEQ_LEN, i - 1], y = item[i]
         his.append(padOrCut(userDf.iloc[max(0, i - args.seq_len):i]['itemId'].values, args.seq_len))
         tar.append(userDf.iloc[i]['itemId'])
@@ -65,19 +65,19 @@ class Dataset:
     def __len__(self):
         return len(self.his)
 
-
+# 测试函数，主要是使用训练好的模型对测试集中的数据进行预测，获取 top-N 推荐结果
 def test(model, testData, _testTar, top=30):
     with th.no_grad():
         ie = model.itemEmbeds.weight
-        #ie /= th.norm(ie, dim=1).view(ie.shape[0], 1) + 1e-9
         N = ie.shape[0]
         # user-wise recall(0~1) and hit (0 or 1)
         recalls, hitRates = [], []
+        # 计算用户行为的表示向量
         for his, tar in tqdm.tqdm(testData):
             bs = his.shape[0]
             caps = model.B2IRouting(his, bs) # (bs, K, D)
 
-            # topN for all K caps's logits
+            # 将计算得到的表示向量与物品的嵌入向量进行矩阵乘法，得到用户与所有物品之间的推荐评分
             # (bs, K, D) X (bs, D, N) -> (bs, K, N) -> (bs, K * N)
             logits = th.matmul(caps, th.transpose(ie, 0, 1)).view(bs, model.K * N).detach().numpy()
             # quick select over dim 1
@@ -87,6 +87,7 @@ def test(model, testData, _testTar, top=30):
                 t = [x for x in _testTar[t] if x != 0]
                 if not t: continue
                 r = set(r)
+                # 对于每个用户，将推荐的物品与实际测试集中的物品进行比较，计算召回率和命中率
                 for i in t:
                     if (i in r): hits += 1
                 recalls.append(hits / len(t))

@@ -189,7 +189,7 @@ def expand_results_test(input:str,history:list):
         print(tuple)
 
 # 带有发布时间限制的搜索函数
-def check_time(result,limit:str):
+def check_time(result,limit):
     """
     :param result: simple_search返回结果拓展后的结果的一行
     :param limit：时间限制字符串
@@ -200,18 +200,29 @@ def check_time(result,limit:str):
         # 将时间戳转换为datetime
         articleTime = datetime.fromtimestamp(int(row['date_timestamp']))
         res = datetime.now() - articleTime
-        if limit == "一周以内":
+        if limit == "一周内":
             if res > timedelta(days=7):
                 return False
-        elif limit == "一个月以内":
+        elif limit == "一个月内":
             if res > timedelta(days=30):
                 return False
-        elif limit == "一年以内":
+        elif limit == "一年内":
             if res > timedelta(days=365):
                 return False
     if str(row['date_timestamp']) == "nan":
         return False
     return True
+
+def check_time_test(input,limit):
+    ret = simple_search(input,[])
+    expanded = expand_results(ret)
+    print("时间限制添加前的结果，共有"+str(len(expanded))+"条：")
+    for item in expanded:
+        print(item)
+    expanded = [item for item in expanded if check_time(item,limit)==True]
+    print("时间限制添加后的结果，共有"+str(len(expanded))+"条：")
+    for item in expanded:
+        print(item)
 
 # 检查是不是指定的域名或者网站
 def check_website(result,name):
@@ -253,6 +264,7 @@ def check_not_include(result,input):
 
 
 
-# if __name__ == "__main__":
-#     #simple_search_test("运动会",['陈雨露'])
-#     expand_results_test("运动会",['陈雨露'])
+if __name__ == "__main__":
+    #simple_search_test("运动会",['陈雨露'])
+    #expand_results_test("运动会",['陈雨露'])
+    check_time_test("运动会","一年内")
