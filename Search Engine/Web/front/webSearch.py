@@ -11,17 +11,17 @@ from wtforms import StringField, SubmitField, SelectField, RadioField
 from wtforms.validators import DataRequired
 from . import front
 from Search.search import *
-
+from datetime import datetime
 
 class AdvancedSearchForm(FlaskForm):
-    all_these_words = StringField('以下所有字词：', validators=[DataRequired()])
-    this_exact_word_or_phrase = StringField('与以下字词完全匹配：')
-    any_of_these_words = StringField('以下任意字词：')
-    none_of_these_words = StringField('不含以下任意字词：')
+    all_these_words = StringField('要搜索的内容：', validators=[DataRequired()])
+    this_exact_word_or_phrase = StringField('包含全部关键词')
+    any_of_these_words = StringField('包含任意关键词')
+    none_of_these_words = StringField('不包括关键词')
     site_or_domain = StringField('网站或域名：')
     time_limit = SelectField('时间范围', choices=["任何时间", "一周内", "一个月内", "一年内"], validators=[DataRequired()])
-    is_title_only = RadioField('字词出现位置', choices=["全部网页", "标题"], validators=[DataRequired()])
-    submit = SubmitField("高级搜索")
+    is_title_only = RadioField('查询关键词位于', choices=["全部网页", "标题"], validators=[DataRequired()])
+    submit = SubmitField("GO Search！")
 
 
 @front.route('/advanced_search', methods=['GET', 'POST'])
@@ -49,10 +49,12 @@ def _advanced_search():
                 result_list = simple_search(all_these_words, search_history)
             else:
                 result_list = simple_search(all_these_words, search_history, True)
-            results = expand_results(result_list)
         except KeyError:
             cost_time = f'{time.perf_counter() - t: .2f}'
             return render_template(r'no_result_page.html', keywords=all_these_words, cost_time=cost_time)
+
+        # 拓展结果
+        results = expand_results(result_list)
 
         # 加入额外的搜索限制
         compare_complete = form.this_exact_word_or_phrase.data # 完全匹配
@@ -63,19 +65,20 @@ def _advanced_search():
 
         # 检查发布时间是否符合要求
         if time_limit:
-            results = [result for result in results if check_time(results,time_limit)==True]
+            results = [result for result in results if check_time(result,time_limit)==True]
         # 检查网站来源是否符合要求
-        if website:
-            results = [result for result in results if check_website(results,website)==True]
+        if website.data:
+            domain = str(website).split("value")[-1][2:].split("\"")[0]
+            results = [result for result in results if check_website(result,str(domain))==True]
         # 检查是否不含有以下词：
         if not_include:
-            results = [result for result in results if check_not_include(results,not_include)==True]
+            results = [result for result in results if check_not_include(result,not_include)==True]
         # 检查是否完全匹配
         if compare_complete:
-            results = [result for result in results if check_match_words(results,compare_complete)==True]
+            results = [result for result in results if check_match_words(result,compare_complete)==True]
         # 检查是否至少含有输入词之一：
         if compare_part:
-            results = [result for result in results if check_match_words(results, compare_complete,False) == True]
+            results = [result for result in results if check_match_words(result, compare_complete,False) == True]
 
         cost_time = f'{time.perf_counter() - t: .2f}'
         if len(results) == 0:
@@ -92,3 +95,5 @@ def _advanced_search():
         return resp
 
     return render_template(r'advanced_search.html', form=form)
+
+

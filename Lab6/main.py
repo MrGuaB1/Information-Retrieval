@@ -1,4 +1,3 @@
-# https://paperswithcode.com/paper/multi-interest-network-with-dynamic-routing
 import random
 import pandas as pd
 import torch

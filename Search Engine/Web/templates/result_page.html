@@ -1,9 +1,37 @@
 {% extends "base.html" %}
 
 {% block head_add %}
-    <title> {{ keywords }} - 南开新闻检索 </title>
+    <title> {{ keywords }} - 信息检索 </title>
 {% endblock %}
-
+{% block styles %}
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            background-image: url("../static/img/bg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+        #logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn {
+            border-radius: 24px;
+        }
+    </style>
+{% endblock %}
 {% block page_content %}
 
     <div class="container">
@@ -27,7 +55,7 @@
         <div class="row">
             <div class="col-md-9" style="padding: 1rem; font-family: Google Sans,arial,sans-serif;">
                 <div id="result-stats" style="font-size:14px">找到约 {{ len_results }} 条结果
-                    <nobr> （用时 {{ cost_time }} 秒）&nbsp;</nobr>&nbsp;<a href="{{ url_for('front._advanced_search', keywords = keywords) }}" style="font-size:14px">高级搜索</a>
+                    <nobr> （耗时 {{ cost_time }} 秒）&nbsp;</nobr>&nbsp;<a href="{{ url_for('front._advanced_search', keywords = keywords) }}" style="font-size:14px">高级搜索</a>
                 </div>
                 <br/>
                 {% for result in results %}
@@ -42,10 +70,11 @@
                 {% endfor %}
             </div>
             <div class="col-md-3" style="padding: 2rem 0 0 0; font-family: Google Sans,arial,sans-serif;">
-                <h6 style="padding-left:1.5rem">相关推荐</h6>
-                <ul id="suggestion" style="list-style:none;font-size:14px">
-
-                </ul>
+                <h6 style="padding-left:1.5rem">站外推荐</h6>
+                <ul id="suggestion" style="list-style:none;font-size:14px"></ul>
+                <hr/>
+                <h6 style="padding-left:1.5rem">站内推荐</h6>
+                <ul id="personal_suggestion" style="list-style:none;font-size:14px"></ul>
                 <hr/>
                 {% if search_history %}
                     <div class="row" style="padding-left:1.5rem">
@@ -71,10 +100,11 @@
 
 {% block script_add %}
     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/suggest.js') }}"></script>
+    <script src="../static/js/recommend.js"></script>
     <script>
         window.onload = function () {
             query_suggest('{{ keywords }}');
+            personal_suggest();
         }
     </script>
 {% endblock %}

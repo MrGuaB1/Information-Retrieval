@@ -4,20 +4,38 @@
 @Author  ：Minhao Cao
 @Date    ：2023/12/3 16:07 
 '''
-from flask import Flask
+from flask import Flask,request
 from flask_bootstrap import Bootstrap5
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
 from Search.readData import *
 import jieba
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 bootstrap = Bootstrap5()
 csrf = CSRFProtect()
 
+# 在每个请求前记录日志
 
 def create_app():
     app = Flask(__name__)
+
+    @app.before_request
+    def log_request_info():
+        app.logger.info(f"Request: {request.method} {request.url}")
+
+    # 设置日志记录器
+    if not app.debug:
+        file_handler = RotatingFileHandler('search.log', maxBytes=1024 * 100, backupCount=1)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+        ))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('Flask application started')
 
     bootstrap.init_app(app)
     csrf.init_app(app)
@@ -33,3 +51,4 @@ def create_app():
     app.register_blueprint(front_blueprint)
 
     return app
+

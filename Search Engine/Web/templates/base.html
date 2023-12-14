@@ -5,12 +5,35 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        {% block styles %}
-            {{ bootstrap.load_css() }}
-        {% endblock %}
+{% block styles %}
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+        #logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn {
+            border-radius: 24px;
+        }
+    </style>
+{% endblock %}
     {% endblock %}
     {% block head_add %}
         <title>My Search Engine</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/mylogo.css">
     {% endblock %}
 </head>
 <body>

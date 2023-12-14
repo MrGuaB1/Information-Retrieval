@@ -1,0 +1,86 @@
+    body {
+        background: linear-gradient(135deg, #e9eff5 0%, #e9eff5 100%); /* Subtle gradient background */
+        color: #333;
+        font-family: 'Open Sans', sans-serif; /* Use a more modern font */
+    }
+
+    .advanced-search-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* More pronounced shadow for depth */
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff; /* Theme color for headings */
+        margin-bottom: 1.5rem;
+        font-weight: 300;
+    }
+
+    hr {
+        border-top: 1px solid #dee2e6;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+        margin-bottom: 1rem;
+    }
+
+    .col-form-label {
+        text-align: left;
+        font-weight: 600; /* Slightly bolder labels for better readability */
+        color: #007bff; /* Theme color for text */
+    }
+
+    .btn {
+        background-color: #007bff; /* Primary button color */
+        color: white;
+        border-radius: 30px; /* More rounded corners for buttons */
+        padding: 0.75rem 2rem;
+        font-weight: bold;
+        border: none;
+        transition: all 0.2s ease; /* Smooth transition for interactions */
+    }
+
+    .btn:hover,
+    .btn:focus {
+        background-color: #005ecb; /* Slightly darker shade on hover/focus */
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5); /* Glow effect on focus */
+    }
+
+    .form-control {
+        border-radius: 30px; /* More rounded corners for input fields */
+        transition: border-color 0.2s ease-in-out; /* Smooth transition for focus */
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Highlight color */
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    .form-group {
+        margin-bottom: 1rem; /* Consistent margin for form groups */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 24px;
+        }
+
+        .advanced-search-container {
+            padding: 1rem;
+        }
+
+        .btn,
+        .form-control {
+            padding: 0.5rem 1rem;
+        }
+
+        .input-group {
+            flex-direction: column;
+        }
+    }

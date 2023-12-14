@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+.mylogo {
+    font-size: 72px; /* Bigger font size for more impact */
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif; /* Roboto font for a modern look */
+    color: #FFF; /* White color for the text */
+    text-align: center;
+    margin: 0; /* Remove any default margin */
+    padding: 20px 0; /* Add some padding above and below the text */
+    background: -webkit-linear-gradient(45deg, #f8f8f8, #fff); /* Subtle gradient effect */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Add text shadow for depth */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.mylogo span {
+    letter-spacing: normal; /* Adjust letter-spacing for the new font */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #bbb; /* Lighter text stroke for a subtle effect */
+    display: inline-block; /* This will allow the letter-spacing to affect the first and last letter as well */
+}

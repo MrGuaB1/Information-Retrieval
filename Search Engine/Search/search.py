@@ -230,12 +230,24 @@ def check_website(result,name):
         return False
     return True
 
+def check_website_test(input,name):
+    ret = simple_search(input,[])
+    expanded = expand_results(ret)
+    print(f"网站或域名限制前的结果，共有{len(expanded)}条：")
+    for item in expanded:
+        print(item)
+    expanded = [item for item in expanded if check_website(item,name)==True]
+    print(f"网站或域名限制后的结果，共有{len(expanded)}条：")
+    for item in expanded:
+        print(item)
+
 # 检查是否和规定的词匹配，传入一个标志位代表是否进行完全匹配
 # 如果不进行完全匹配，那么只要出现一个词就可以判定为True
 def check_match_words(result,input,complete=True):
     row = allInfo.loc[result[1]]
     text = f"{row['title']}#{row['description']}#{row['content']}#{row['editor']}"
-    ls = re.findall(r'\"(.+?)\"',input)  # 用正则表达式提取双引号中的内容
+    # 用正则表达式提取双引号中的内容
+    ls = str(input).split(" ")
     for word in ls:
         if word == '#':
             pass
@@ -249,11 +261,21 @@ def check_match_words(result,input,complete=True):
         return True
     return False
 
+def check_complete_match_test(input,limit):
+    ret = simple_search(input,[])
+    expanded = expand_results(ret)
+    print(f"限制前的结果，共有{len(expanded)}条：")
+    expanded = [item for item in expanded if check_match_words(item,limit,True) == True]
+    print(f"包含以下所有词限制后的结果，共有{len(expanded)}条：")
+    for item in expanded:
+        print(item)
+
+
 # 检查是否不含一些词
 def check_not_include(result,input):
     row = allInfo.loc[result[1]]
     text = f"{row['title']}#{row['description']}#{row['content']}#{row['editor']}"
-    ls = input.replace('\"', '').split('-')
+    ls = str(input).split(" ")
     ls = [word for word in ls if word != '']
     for word in ls:
         if word == '#':
@@ -265,6 +287,18 @@ def check_not_include(result,input):
 
 
 if __name__ == "__main__":
-    #simple_search_test("运动会",['陈雨露'])
+    ret = simple_search("运动会",['陈雨露'])
+    ret = expand_results(ret)
+    print(f"简单搜索结果：共{len(ret)}条")
     #expand_results_test("运动会",['陈雨露'])
-    check_time_test("运动会","一年内")
+    #check_time_test("运动会","一年内")
+    #check_website_test("运动会",'edu')
+    # ret = [item for item in ret if check_time(item,"一年内")]
+    # print(f"过滤时间后，剩余{len(ret)}条")
+    # ret = [item for item in ret if check_website(item,"edu")]
+    # print(f"过滤来源后，剩余{len(ret)}条")
+    ret = [item for item in ret if check_match_words(item,"校长 呼吁",True)]
+    for item in ret:
+        print(item)
+    print(f"过滤必须词后，剩余{len(ret)}条")
+    #check_complete_match_test("运动会","\"校长\"")

@@ -1,0 +1,109 @@
+    body {
+            background-image: url("https://lh4.googleusercontent.com/proxy/UOhQwfclsAK8TnXZqoTkh9szHvYOJ3auDH07hZBZeVaaRWvzGaXpaYl60MfCRuW_S57gvzBw859pj5Xl2pW_GpfG8k2GhE9LUFNKwA=w3840-h2160-p-k-no-nd-mv");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+        #logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5; /* Light grey border */
+            box-shadow: none; /* No shadow for a flat design */
+            border-radius: 24px; /* Rounded corners */
+            padding: 10px 20px;
+            font-size: 16px;
+            border-bottom-right-radius: 0; /* Remove right bottom radius */
+            border-bottom-left-radius: 0; /* Remove left bottom radius */
+        }
+        .btn {
+            border-radius: 24px;
+        }
+        .form-control {
+            border: 1px solid #dfe1e5; /* Google's light grey border */
+            box-shadow: none; /* No shadow for a flat design */
+            border-radius: 24px; /* Rounded corners */
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: -1px;
+            border: 1px solid #dfe1e5; /* Light grey border */
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* Soft shadow for depth */
+            border-radius: 24px; /* Rounded corners */
+            padding: 10px 20px;
+            font-size: 16px;
+        /* Remove the bottom border radius to make it blend with the search history */
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        /* Adjust width as necessary, Google uses a full-width input for large screens */
+        }
+
+    /* Styles for search history list to match Google's */
+    .search-history {
+        display: none; /* Initially hidden */
+        position: absolute; /* To float over content */
+        background-color: #ffffff; /* White background */
+        box-shadow: 0 4px 6px rgba(32,33,36,0.28); /* Subtle shadow for depth */
+        width: calc(100% - 2px); /* Match input width, account for border */
+        top: calc(100% - 1px);
+        left: 1px; /* Align with the left edge of the input field */
+        border-radius: 0 0 24px 24px; /* Rounded corners on the bottom */
+        border: 1px solid #dfe1e5; /* Match the input field border */
+        border-top: none; /* Hide the top border */
+        max-height: 300px; /* Limit height of the search history */
+        overflow-y: auto; /* Enable scroll if too many items */
+        z-index: 1000; /* Ensure it stacks on top */
+        width: 100%; /* Full width of the input group */
+        box-sizing: border-box; /* Include padding and border in the width */
+        border: 1px solid #dfe1e5; /* Light grey border */
+        border-top: none; /* No top border */
+        border-bottom-right-radius: 24px; /* Rounded bottom right corner */
+        border-bottom-left-radius: 24px; /* Rounded bottom left corner */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+        margin-top: -1px; /* Ensure the history box touches the input box */
+    }
+
+    .search-history a {
+        padding: 10px 20px;
+        display: block;
+        color: #202124; /* Google-like text color */
+        font-size: 16px; /* Slightly larger font size for readability */
+        line-height: 1.5; /* More space between lines */
+        text-decoration: none; /* No underline */
+        border-bottom: 1px solid #e0e0e0; /* Light border for each item */
+        padding: 10px 20px;
+        color: #202124; /* Google-like text color */
+        font-size: 16px;
+        line-height: 1.5;
+        text-decoration: none; /* No underline */
+        display: block; /* Make each link fill the horizontal space */
+        border-bottom: 1px solid #e0e0e0; /* Separator between history items */
+    }
+
+    .search-history a:last-child {
+        border-bottom: none; /* No border for the last item */
+    }
+
+    .search-history a:hover {
+        background-color: #eee; /* Light grey background on hover */
+    }
+
+    /* Ensure the input group is positioned relatively */
+    .input-group {
+        position: relative;
+        width: 584px; /* Match Google's width or adjust as necessary */
+        margin: 0 auto;
+    }
+    .form-control:focus + .search-history,
+    .search-history:hover {
+        display: block;
+    }
