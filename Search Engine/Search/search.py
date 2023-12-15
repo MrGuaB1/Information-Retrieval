@@ -51,6 +51,11 @@ def simple_search(input: str, history: list, onlyTitle: bool = False,num:int = 1
     """
 
     # 对输入和历史记录进行分词
+    regex = r'[\.\^\$\*\+\?\{\}\[\]\|\(\)]'
+    origin_input = input
+    isRe = re.search(regex,input)
+    if isRe is not None:
+        input = re.sub(regex, '', input)
     spilt_input = sorted(list(cut_for_search(input)))
     spilt_input = [term for term in spilt_input if term not in [""," "]]
     spilt_history = []
@@ -145,11 +150,18 @@ def simple_search(input: str, history: list, onlyTitle: bool = False,num:int = 1
             results.append((key_results[i][0],key_results[i][1]))
         results = sorted(results, key=lambda item: item[1], reverse=True)
 
-    ls = []
+    ls,ans = [],[]
     for res in results:
         if res[1]>0 :
             ls.append((res[0],res[1]))
-    return ls
+    if isRe is not None:
+        for item in ls:
+            row = allInfo.loc[item[0]]
+            if re.search(origin_input,str(row.title)) is not None or re.search(origin_input,str(row.description)) is not None or re.search(origin_input,str(row.content)) is not None:
+                ans.append(item)
+    if isRe is None:
+        return ls
+    return ans
 
 def simple_search_test(input:str,history:list):
     time1 = time.time()
@@ -246,7 +258,6 @@ def check_website_test(input,name):
 def check_match_words(result,input,complete=True):
     row = allInfo.loc[result[1]]
     text = f"{row['title']}#{row['description']}#{row['content']}#{row['editor']}"
-    # 用正则表达式提取双引号中的内容
     ls = str(input).split(" ")
     for word in ls:
         if word == '#':

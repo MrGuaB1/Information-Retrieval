@@ -32,15 +32,16 @@ def _advanced_search():
             form.all_these_words.data = request.args.get('keywords')
 
     if form.validate_on_submit():
-        t = time.perf_counter()  # 计时
+        t = time.perf_counter()
         all_these_words = form.all_these_words.data
 
         if request.cookies.get('search_history'):
-            search_history: list = json.loads(request.cookies.get('search_history'))  # 从cookie中获取搜索历史
+            # 从cookie中获取搜索历史
+            search_history: list = json.loads(request.cookies.get('search_history'))
         else:
             search_history = []
 
-        if form.is_title_only.data == '标题':  # 传入的是str，需要转换为bool
+        if form.is_title_only.data == '标题':
             is_title_only = True
         else:
             is_title_only = False
@@ -87,10 +88,10 @@ def _advanced_search():
         resp = Response(render_template(r'result_page.html', keywords=all_these_words, results=results, len_results=len(results), cost_time=cost_time,search_history=search_history))
 
         if all_these_words not in search_history:
-            search_history.append(all_these_words)  # 将搜索关键词添加到历史记录中
-        if len(search_history) > 12:
-            search_history.pop(0)  # 如果历史记录超过12条，则删除最早的一条
-        resp.set_cookie('search_history', json.dumps(search_history), max_age=60 * 60 * 24 * 30)  # 设置cookie,有效期为30天
+            search_history.append(all_these_words)
+        if len(search_history) > 10:
+            search_history.pop(0)
+        resp.set_cookie('search_history', json.dumps(search_history), max_age=60 * 60 * 24 * 30)
 
         return resp
 

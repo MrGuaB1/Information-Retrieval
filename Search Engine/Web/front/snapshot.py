@@ -21,4 +21,4 @@ def _snapshot():
         # 向前端以网页的形式返回快照
         return render_template(r'snapshot.html', snapshot=snapshot)
     else:
-        return "不合法的参数"
+        return "invalid arguments!"

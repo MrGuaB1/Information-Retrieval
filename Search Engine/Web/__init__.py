@@ -28,7 +28,7 @@ def create_app():
 
     # 设置日志记录器
     if not app.debug:
-        file_handler = RotatingFileHandler('search.log', maxBytes=1024 * 100, backupCount=1)
+        file_handler = RotatingFileHandler('search.log', maxBytes=1024 * 1024, backupCount=1)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
         ))

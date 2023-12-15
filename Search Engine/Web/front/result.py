@@ -48,7 +48,7 @@ def _result_page():
 
     if keywords not in search_history:
         search_history.append(keywords)  # 将搜索关键词添加到历史记录中
-    if len(search_history) > 12:
+    if len(search_history) > 10:
         search_history.pop(0)  # 如果历史记录超过12条，则删除最早的一条
 
     resp.set_cookie('search_history', json.dumps(search_history), max_age=60 * 60 * 24 * 30)  # 设置cookie,有效期为30天
