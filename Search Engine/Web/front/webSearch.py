@@ -19,7 +19,7 @@ class AdvancedSearchForm(FlaskForm):
     any_of_these_words = StringField('包含任意关键词')
     none_of_these_words = StringField('不包括关键词')
     site_or_domain = StringField('网站或域名：')
-    time_limit = SelectField('时间范围', choices=["任何时间", "一周内", "一个月内", "一年内"], validators=[DataRequired()])
+    time_limit = SelectField('时间范围', choices=["任何时间", "一个月内", "一年内"], validators=[DataRequired()])
     is_title_only = RadioField('查询关键词位于', choices=["全部网页", "标题"], validators=[DataRequired()])
     submit = SubmitField("GO Search！")
 
@@ -52,7 +52,7 @@ def _advanced_search():
                 result_list = simple_search(all_these_words, search_history, True)
         except KeyError:
             cost_time = f'{time.perf_counter() - t: .2f}'
-            return render_template(r'no_result_page.html', keywords=all_these_words, cost_time=cost_time)
+            return render_template(r'404.html', keywords=all_these_words, cost_time=cost_time)
 
         # 拓展结果
         results = expand_results(result_list)
@@ -69,6 +69,7 @@ def _advanced_search():
             results = [result for result in results if check_time(result,time_limit)==True]
         # 检查网站来源是否符合要求
         if website.data:
+            # 获取input标签中的value字段的值
             domain = str(website).split("value")[-1][2:].split("\"")[0]
             results = [result for result in results if check_website(result,str(domain))==True]
         # 检查是否不含有以下词：
@@ -83,17 +84,17 @@ def _advanced_search():
 
         cost_time = f'{time.perf_counter() - t: .2f}'
         if len(results) == 0:
-            return render_template(r'no_result_page.html', keywords=all_these_words, cost_time=cost_time)
+            return render_template(r'404.html', keywords=all_these_words, cost_time=cost_time)
 
-        resp = Response(render_template(r'result_page.html', keywords=all_these_words, results=results, len_results=len(results), cost_time=cost_time,search_history=search_history))
+        response = Response(render_template(r'result_page.html', keywords=all_these_words, results=results, len_results=len(results), cost_time=cost_time,search_history=search_history))
 
         if all_these_words not in search_history:
             search_history.append(all_these_words)
         if len(search_history) > 10:
             search_history.pop(0)
-        resp.set_cookie('search_history', json.dumps(search_history), max_age=60 * 60 * 24 * 30)
+        response.set_cookie('search_history', json.dumps(search_history), max_age=60 * 60 * 24 * 30)
 
-        return resp
+        return response
 
     return render_template(r'advanced_search.html', form=form)
 

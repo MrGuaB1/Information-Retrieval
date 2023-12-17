@@ -27,21 +27,21 @@ def _result_page():
         return redirect(url_for('front._index'))  # 如果keywords参数为空或者不存在，则返回首页
     else:
         try:
-            result_list: list[tuple[str, float]] = simple_search(keywords, search_history)  # [(url,cos_sim_score),...]
-            results: list[tuple] = []  # [(title, url, description, cos_sim_score * page_rank_score),...]
+            result_list = simple_search(keywords, search_history)
+            results = []
             for result in result_list:
                 url = result[0]
                 temp_series = allInfo.loc[url].fillna('')
-                title = temp_series['title'].replace('_', '/')  # 还原文件名无法使用/用下划线代替的情况
+                title = temp_series['title'].replace('_', '/')
                 description = temp_series['description']
                 cos_sim_score = result[1]
                 page_rank_score = page_rank.loc[url]['page_rank']
-                results.append((title, url, description, cos_sim_score * page_rank_score))  # 余弦相似度和PageRank进行乘算加权
+                results.append((title, url, description, cos_sim_score * page_rank_score))
             # 按照cos_sim_score*page_rank_score，从大到小排序
             results.sort(key=lambda x: x[3], reverse=True)
         except KeyError :
             cost_time = f'{time.perf_counter() - t: .2f}'
-            return render_template(r'no_result_page.html', keywords=keywords, cost_time=cost_time)
+            return render_template(r'404.html', keywords=keywords, cost_time=cost_time)
         cost_time = f'{time.perf_counter() - t: .2f}'
 
     resp = Response(render_template(r'result_page.html', keywords=keywords, results=results, len_results=len(results), cost_time=cost_time, search_history=search_history))
